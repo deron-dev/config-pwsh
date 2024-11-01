@@ -1,7 +1,7 @@
 oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\onehalf.minimal.omp.json" | Invoke-Expression
 
 # make tab completion not bad
-Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
+Set-PSReadlineKeyHandler -Key Tab -Function Complete
 
 Function x { exit }
 
