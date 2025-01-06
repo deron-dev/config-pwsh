@@ -11,20 +11,24 @@ Function gd { git diff }
 Function gb { git branch -a }
 Function gbd { git branch -a | rg deron }
 
-Function ln ($target, $link) {
-    New-Item -Path $link -ItemType SymbolicLink -Value $target
+Function ln {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory=$true, Position = 0)]
+        [System.IO.FileSystemInfo] $target,
+
+        [Parameter(Mandatory=$true, Position = 1)]
+        [string] $link
+    )
+    New-Item -Path $link -ItemType SymbolicLink -Value $target.FullName
 }
 
 Function cdln ($link) {
     Get-Item $link | Select-Object -ExpandProperty Target | Set-Location
 }
 
-Function cd () {
-    Write-Output asdf
-}
-
 Function pwd2 () {
-    Write-Output (Get-Item (Get-Location).Path).FullName
+    (Get-Item (Get-Location).Path).FullName | Set-Clipboard
 }
 
 $ENV:GIT_SSH="C:\Windows\System32\OpenSSH\ssh.exe"
