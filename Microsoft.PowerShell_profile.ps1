@@ -1,5 +1,3 @@
-Invoke-Expression (&starship init powershell)
-
 Set-PSReadlineKeyHandler -Key Tab -Function Complete
 
 Function x { exit }
@@ -32,3 +30,18 @@ Function pwd2 () {
 }
 
 $ENV:GIT_SSH="C:\Windows\System32\OpenSSH\ssh.exe"
+
+# let emulator know what CWD is
+# https://wezfurlong.org/wezterm/shell-integration.html#osc-7-on-windows-with-powershell
+$prompt = ""
+function Invoke-Starship-PreCommand {
+    $current_location = $executionContext.SessionState.Path.CurrentLocation
+    if ($current_location.Provider.Name -eq "FileSystem") {
+        $ansi_escape = [char]27
+        $provider_path = $current_location.ProviderPath -replace "\\", "/"
+        $prompt = "$ansi_escape]7;file://${env:COMPUTERNAME}/${provider_path}$ansi_escape\"
+    }
+    $host.ui.Write($prompt)
+}
+
+Invoke-Expression (&starship init powershell)
