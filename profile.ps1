@@ -15,12 +15,13 @@ Function ln {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory=$true, Position = 0)]
-        [System.IO.FileSystemInfo] $target,
+        [string] $target,
 
         [Parameter(Mandatory=$true, Position = 1)]
         [string] $link
     )
-    New-Item -Path $link -ItemType SymbolicLink -Value $target.FullName
+    $target = Resolve-Path $target
+    New-Item -Path $link -ItemType SymbolicLink -Value $target
 }
 
 Function cdln ($link) {
